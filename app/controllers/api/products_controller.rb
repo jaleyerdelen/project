@@ -8,7 +8,8 @@ class ProductsController < ApplicationController
 
     def show
         @product = Product.find(params[:id])
-        render json: @product
+        image = rails_blob_url(@product.product_image) #active storage'da tuttuğumuz datayı getirir
+        render json: { "image": image, "data": @product }
     end
 
     def create
@@ -30,7 +31,7 @@ class ProductsController < ApplicationController
     end
 
     def product_params
-        params.permit(:name, :description, :quantity, :price) # sadece burada yazdığımız dataları alır başka datalara izin vermez
+        params.permit(:name, :description, :quantity, :price, :product_image) # sadece burada yazdığımız dataları alır başka datalara izin vermez
     end
 end
 end
