@@ -14,8 +14,12 @@ class ProductsController < ApplicationController
 
     def create
         @product = Product.create(product_params)
+        if @product.valid?
         @product.save
         render json: @product
+        else
+            render json: @product.errors.full_messages, status: 400
+        end
     end
 
     def update
