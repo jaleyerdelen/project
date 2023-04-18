@@ -1,5 +1,8 @@
 module Api
     class CategoriesController < ApplicationController
+        
+        before_action :set_category, only: %i[update show destroy]
+
         def index
             @categories = Category.order(created_at: :desc)
             if !@categories.blank?
@@ -10,7 +13,6 @@ module Api
         end
 
         def show
-            @category = set_category
             if !@category.blank?
                 render json: @category, status: :ok
             else
@@ -21,6 +23,7 @@ module Api
         def create
             @category = Category.create(params_category)
             if @category.save
+                p "created category"
                 render json: @category, status: :ok
             else
                 render json: "could't updated", status: :bad_request
@@ -28,7 +31,6 @@ module Api
         end
 
         def update
-            @category = set_category
             if @category.update(params_category)
                 render json: @category, status: :ok
             else
@@ -37,7 +39,6 @@ module Api
         end
 
         def destroy
-            @category = set_category
             if @category.destroy
                 render json: "Deleted category", status: :ok
             else
